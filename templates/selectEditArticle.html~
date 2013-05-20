@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+
+{% block title %}Edit article{% endblock %}
+{% block navEditArticle %}active{% endblock %}
+
+{% block content %}
+	<script type="text/javascript">
+		function post() {
+			var urlSubmit = $('#select_article').attr('action');
+				$.ajax({  
+					type: "POST",
+					url: urlSubmit,
+					data: $('#select_article').serializeArray(),
+					success: function(data) {
+						$('#reponse-post').fadeOut('fast', function(){
+							$('#reponse-post').html();
+							$('#reponse-post').html(data);
+							$('#reponse-post').fadeIn('fast');
+						});
+					}
+				});	
+		}
+
+		$(function(){
+				post();	
+				$("#id_articles").change(function() { post() });
+		});
+	</script>
+	<form id="select_article" action="{% url readItLater.views.select_edit_article %}" method="post" class="form-horizontal">
+		{% csrf_token %}
+		<legend>Select</legend>
+		<fieldset>
+
+			<div class="row-fluid">
+				<div class="control-group">
+					<div class="span2"><label class="control-label" for="id_articles">{{ form.articles.label }}</label></div>
+					<div class="controls span10">{{ form.articles }}</div>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+	<br/>
+	<div id="reponse-post">
+	</div>
+{% endblock %}

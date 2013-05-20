@@ -1,0 +1,131 @@
+body {
+	margin-top: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	/*padding-top: 20px;*/
+	/*padding-bottom: 60px;*/
+	width: 75%;
+	background-color: #eee;
+	height:100%;
+}
+
+.container-fluid {
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+	background-color: #fff;
+
+	min-height:100%;
+	/*padding-bottom: 20px;*/
+}
+
+.container-fluid.main  {
+	padding: 0px;
+}
+
+.container-fluid.sub {
+	box-shadow: none;
+}
+
+.navbar-inner {
+	border-radius: 0px;
+	border-left: none;
+	border-right: none;
+}
+
+.form-horizontal .row-fluid .controls {
+	margin-left: 2.12766%;
+}
+
+/*
+.subNav {
+  list-style: none outside none;
+	margin-left: 202px;
+	display: block;
+}
+
+.subNav > li {
+float: left;
+margin-right: 20px;
+}*/
+
+.nav h4 {
+	margin-right: 20px;
+}
+
+form .row-fluid {
+	margin-bottom: 10px;
+}
+
+button.btn.reset,
+button.reset {
+	background-color: transparent !important;
+	background-image: none;
+	border-radius: none;
+	box-shadow: none;
+	border:0px;
+	margin: 0px;
+	padding: 0px;	
+	vertical-align: baseline;
+}
+
+button.reset:focus,
+button.reset:hover,
+button.reset.btn:hover,
+button.reset.btn:focus {
+	transition: none;
+	background-color: transparent;
+}
+
+label.search {
+	text-align: right;
+	padding-top: 5px;
+}
+
+input[type='text'] {
+	height: 30px;
+	width: 100%;
+}
+
+input[type='checkbox'] {
+	margin-top: 8px;
+}
+
+select {
+	width: 100%;
+}
+
+legend.dataCmd {
+	position: relative;
+}
+
+legend.dataCmd .title {
+	left: 0;
+	bottom: 0
+}
+
+legend.dataCmd button {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 40;
+}
+
+.wrap {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis; 
+}
+
+.form-horizontal .row-fluid .control-group:before,
+.form-horizontal .row-fluid .control-group:after,
+.form-horizontal .row-fluid .control-group {
+	display:inline;
+	margin-bottom: 0px;
+}
+
+form.form-horizontal .row-fluid {
+	margin-bottom: 20px;
+}
+
+form.form-horizontal .row-fluid .control-group.right-panel .span2 {
+	margin-left: 2.12766%;
+}

@@ -1,0 +1,66 @@
+<script type="text/javascript">
+	$(function(){
+		date = $("#id_endDate").val();
+		$("#id_endDate").datepicker();
+	});
+	$(function(){
+		$("#save").click(function() {
+			var urlSubmit = $('#edit_article').attr('action');
+			$.ajax({  
+				type: "POST",
+				url: urlSubmit,
+				data: $('#edit_article').serializeArray(),
+				success: function(data) {
+						$('#edit_article_response').html();
+						$('#edit_article_response').html(data);
+				}
+			});		
+			return false;
+		});
+	});
+
+</script>
+<div id="edit_article_response">
+	<form id="edit_article" action="{% url readItLater.views.edit_article %}" method="post" class="form-horizontal">
+		{% csrf_token %}
+		<legend class="dataCmd">
+			<span class="title">Edit</span>
+			<button id="save" name="save" class="btn reset btn-default"><i class="icon-ok"></i></button>
+		</legend>
+		{% if messages %}
+		<div class="row-fluid">
+			<div class="span12 messages text-center">
+				{% for message in messages %}
+					<span{% if message.tags %} class="text-{{ message.tags }}"{% endif %}>{{ message }}</span>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+		<fieldset>
+			{% for field in form.visible_fields %}
+				{% if forloop.counter0|divisibleby:"2" %}
+					<div class="row-fluid"> 
+				{% endif %}
+					<div class="control-group {% if not forloop.counter0|divisibleby:'2' %} right-panel {% endif %}{% if field.errors %} error {% endif %}">
+						<div class="span2"><label class="control-label" for="id_{{ field.html_name }}">{{ field.label }}</label></div>
+						<div class="controls span4">
+							{{ field }}
+							{% if field.errors %}
+								{% for error in field.errors %}
+									<span class="help-inline error">{{ error }}</span>
+								{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+				{% if not forloop.counter0|divisibleby:"2" or forloop.last%}
+					</div> 
+				{% endif %}
+			{% endfor %}
+			
+			{% for field in form.hidden_fields %}
+				{{ field }}
+			{% endfor %}
+		</fieldset>
+	</form>
+
+</div>

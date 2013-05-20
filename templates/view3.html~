@@ -1,0 +1,104 @@
+{% load static %}
+{% load bootstrap_toolkit %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" id="view3">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>
+			View
+		</title>
+		{%  bootstrap_stylesheet_tag %}
+		<link rel="stylesheet" type="text/css" href="{% static 'style.css'%}" media="screen" />
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+    {% bootstrap_javascript_tag "dropdown" %}
+	</head>		
+	<body>
+		<div class="container-fluid main">			
+			<div class="masthead">
+        <div class="navbar">
+          <div class="navbar-inner">		
+						<div class="span2">			
+							<h4 class="muted"><a>Read it later !</a></h4>
+						</div>					
+            <div class="span10">
+							<div class="row">
+								<div class="span10">
+									<ul class="nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Add a new article</a></li>
+                    <li><a href="#">About</a><li>
+                  </ul>      
+								</div>
+							</div>
+              <div class="row">
+								<div class="span10">
+									<ul class="nav subnav">
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Overdue</a></li>
+                    <li><a href="#">Page 3</a></li>
+                    <li><a href="#">Page 4</a><li>
+                  </ul>      
+								</div>
+							</div>
+
+                
+						</div>
+          </div>
+        </div><!-- /.navbar -->
+      </div> <!-- /.masthead -->
+
+		<div class="container-fluid sub">			
+			
+<form action="{% url readItLater.views.home %}" method="post"> {% csrf_token %}
+				<div class="row-fluid">	
+					<div class="span12">
+						<legend>Today's readings</legend>												
+					</div>
+				</div>
+				{% for article in todayArticles %}	
+					<div class="row-fluid">			
+						<div class="span4">
+							<a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+						</div>
+						<div class="span4">description</div>
+						<div class="span3"></div>
+						<div class="span1">
+							<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
+							<button value="{{ article.id }}" type="submit" class="reset"><i class="icon-repeat"></i></button>
+							<button value="{{ article.id }}" type="submit" name="read" class="reset" title="read"><i class="icon-ok"></i></button>
+						</div>
+					</div>	
+					{% empty %}
+					<div class="row-fluid">			
+						<div class="span12">No reading for today.</div>
+					</div>
+				{% endfor %}		
+				<div class="row-fluid">	
+					<div class="span12">
+						<legend>Future readings</legend>												
+					</div>
+				</div>	
+				{% for article in additionalArticles %}	
+					<div class="row-fluid">			
+						<div class="span4">
+							<a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+						</div>
+						<div class="span4">description</div>
+						<div class="span3"></div>
+						<div class="span1">
+							<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
+							<button value="{{ article.id }}" type="submit" class="reset"><i class="icon-repeat"></i></button>
+							<button value="{{ article.id }}" type="submit" name="read" class="reset" title="read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')"><i class="icon-ok"></i></button>
+						</div>
+					</div>	
+					{% empty %}
+					<div class="row-fluid">			
+						<div class="span12">No more readings.</div>
+					</div>
+				{% endfor %}					
+			</form>
+		</div>
+</div>
+	</body>
+
+</html>

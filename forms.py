@@ -27,6 +27,7 @@ class EditArticleForm(forms.ModelForm):
 		try:
 			article = Article.objects.get(id=int(article_id))
 			endDate = self.cleaned_data['endDate']
+			cleaned_data['creationDate'] = article.creationDate
 			if ((article.endDate is not None and endDate != article.endDate) or (article.endDate is None)) and endDate is not None and endDate < datetime.date.today():
 				self._errors["endDate"] = self.error_class([u"End date cannot be in the past."])					
 		except Article.DoesNotExist:
@@ -45,11 +46,9 @@ class DurationAdminForm(forms.ModelForm):
 		cleaned_data = super(DurationAdminForm, self).clean()
 		numberDays = cleaned_data.get('numberDays')
 		date = cleaned_data.get('date')
-		if not(numberDays) and not(date):
+		if numberDays is None and date is None:
 			raise forms.ValidationError("NumberDays and Date cannot be both empty.")
 		return cleaned_data
-
-
 
 class SearchForm(forms.Form):
 	filterChoices = (ArticleFilters.Filters.items())

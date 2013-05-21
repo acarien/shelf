@@ -25,7 +25,7 @@ class Duration(models.Model):
 class Article(models.Model):
 	title = models.CharField(max_length=200)
 	url = models.URLField(max_length=200)
-	publicationDate = models.DateTimeField(auto_now_add=True, auto_now=False, editable=False)
+	creationDate = models.DateTimeField(auto_now_add=True, auto_now=False, editable=False)
 	endDate = models.DateField(null=True)
 	hasBeenRead = models.BooleanField(default=False)
 	#user = models.ForeignKey(User, editable=False)

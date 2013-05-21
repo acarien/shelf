@@ -131,8 +131,8 @@ def select_edit_article(request, article_id=None):
 
 def edit_article(request):
 	if request.method == 'POST' and request.is_ajax():
-		form = EditArticleForm(request.POST)
-		if form.is_valid():	
+		form = EditArticleForm(request.POST)	
+		if form.is_valid():
 			article_id = form.cleaned_data['id']
 			article = get_object_or_404(Article, id = article_id) # raise exception
 			article.title = form.cleaned_data['title']

@@ -19,7 +19,7 @@
           <div class="navbar-inner">
             <div class="container">
               <ul class="nav">
-								<li><h4 class="muted" title="v0.5">Shelf</h4></li>
+								<li><h4 class="muted" title="v1.0">Shelf</h4></li>
                 <li class="{% block navHome %} {% endblock %}"><a href="{% url 'shelf.views.home' %}">Home</a></li>
                 <li class="{% block navSearch %} {% endblock %}"><a href="{% url 'shelf.views.search' %}">Search</a></li>
                 <li class="{% block navAddArticle %} {% endblock %}"><a href="{% url 'shelf.views.addArticle' %}">Add</a></li>

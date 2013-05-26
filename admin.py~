@@ -1,0 +1,6 @@
+from django.contrib import admin
+from readItLater.models import Article, Duration
+from readItLater.modelsAdmin import DurationAdmin
+
+admin.site.register(Article)
+admin.site.register(Duration, DurationAdmin)

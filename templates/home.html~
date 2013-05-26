@@ -43,7 +43,7 @@
 						<div class="span3"></div>
 						<div class="span1">
 							<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
-							<a href="{% url select_edit_id article.id %}" title="edit"><i class=" icon-edit"></i></a>
+							<a href="{% url select_edit_id article.id %}" tooltip="edit"><i class=" icon-edit"></i></a>
 							<button value="{{ article.id }}" type="submit" name="read" class="reset" title="read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')"><i class="icon-ok"></i></button>
 						</div>
 					</div>	

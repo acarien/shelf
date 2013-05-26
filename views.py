@@ -134,7 +134,7 @@ def edit_article(request):
 		form = EditArticleForm(request.POST)	
 		if form.is_valid():
 			article_id = form.cleaned_data['id']
-			article = get_object_or_404(Article, id = article_id) # raise exception
+			article = get_object_or_404(Article, id = article_id) # todo raise exception
 			article.title = form.cleaned_data['title']
 			article.url = form.cleaned_data['url']
 			article.hasBeenRead = form.cleaned_data['hasBeenRead']

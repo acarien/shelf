@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap_toolkit %}
 
 {% block title %}Search{% endblock %}
 
@@ -31,7 +30,7 @@
 		{% if articles %}
 			<div class="row-fluid">		
 				<div class="span4 wrap"><b>Title</b></div>
-				<div class="span4"><b>Description</b></div>
+				<div class="span4"></div>
 				<div class="span3"><b>Duration</b></div>
 				<div class="span1"><b>Action</b></div>
 			</div>
@@ -40,12 +39,12 @@
 					<div class="span4 wrap">
 						<a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
 					</div>
-					<div class="span4">description</div>
+					<div class="span4"></div>
 					<div class="span3">{{ article.endDate }}</div>
 					<div class="span1">
-						<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
-						<a href="{% url select_edit_id article.id %}"><i class="icon-edit"></i></a>
-						<button value="{{ article.id }}" type="submit" name="read" class="btn reset {% if article.hasBeenRead %} disabled {% endif %}" title="read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')" {% if article.hasBeenRead %} disabled {% endif %}><i class="icon-ok"></i></button>
+						<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="Delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
+						<a href="{% url select_edit_id article.id %}" title="Edit"><i class="icon-edit"></i></a>
+						<button value="{{ article.id }}" type="submit" name="read" class="btn reset {% if article.hasBeenRead %} disabled {% endif %}" title="Read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')" {% if article.hasBeenRead %} disabled {% endif %}><i class="icon-ok"></i></button>
 					</div>
 				</div>								
 			{% endfor %}

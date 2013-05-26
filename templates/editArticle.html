@@ -11,8 +11,8 @@
 				url: urlSubmit,
 				data: $('#edit_article').serializeArray(),
 				success: function(data) {
-						$('#edit_article_response').html();
-						$('#edit_article_response').html(data);
+						$('#response-inner').html();
+						$('#response-inner').html(data);
 				}
 			});		
 			return false;
@@ -20,12 +20,12 @@
 	});
 
 </script>
-<div id="edit_article_response">
+<div id="response-inner">
 	<form id="edit_article" action="{% url shelf.views.edit_article %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 		<legend class="dataCmd">
 			<span class="title">Edit</span>
-			<button id="save" name="save" class="btn reset btn-default"><i class="icon-ok"></i></button>
+			<button id="save" name="save" title="Save" class="btn reset btn-default"><i class="icon-ok"></i></button>
 		</legend>
 		{% if messages %}
 		<div class="row-fluid">

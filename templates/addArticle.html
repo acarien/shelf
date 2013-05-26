@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap_toolkit %}
 
 {% block title %}Add article{% endblock %}
 
@@ -11,7 +10,7 @@
 	{% csrf_token %}
 	<legend class="dataCmd">
 		<span class="title">Add a new article</span>
-		<button id="save" name="save" class="btn reset btn-default"><i class="icon-ok"></i></button>
+		<button id="save" name="save" class="btn reset btn-default" title="Add"><i class="icon-ok"></i></button>
 	</legend>
 {% if messages %}
 		<div class="row-fluid">

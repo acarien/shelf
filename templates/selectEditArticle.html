@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap_toolkit %}
 
 {% block title %}Edit article{% endblock %}
 {% block navEditArticle %}active{% endblock %}
@@ -13,10 +12,10 @@
 					url: urlSubmit,
 					data: $('#select_article').serializeArray(),
 					success: function(data) {
-						$('#reponse-post').fadeOut('fast', function(){
-							$('#reponse-post').html();
-							$('#reponse-post').html(data);
-							$('#reponse-post').fadeIn('fast');
+						$('#response-outer').fadeOut('fast', function(){
+							$('#response-outer').html();
+							$('#response-outer').html(data);
+							$('#response-outer').fadeIn('fast');
 						});
 					}
 				});	
@@ -42,6 +41,6 @@
 		</fieldset>
 	</form>
 	<br/>
-	<div id="reponse-post">
+	<div id="response-outer">
 	</div>
 {% endblock %}

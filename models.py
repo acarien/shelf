@@ -4,7 +4,7 @@ from datetime import date, timedelta
 
 # Duration
 class Duration(models.Model):
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, unique=True)
 	numberDays = models.PositiveIntegerField(null=True, blank=True)
 	date = models.DateField(null=True, blank=True)
 

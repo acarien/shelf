@@ -31,6 +31,25 @@ body {
 	border-right: none;
 }
 
+form.form-horizontal .row-fluid {
+	margin-bottom: 20px;
+}
+
+.form-horizontal .row-fluid .control-group:before,
+.form-horizontal .row-fluid .control-group:after,
+.form-horizontal .row-fluid .control-group {
+	display:inline;
+	margin-bottom: 0px;
+}
+
+.form-horizontal .row-fluid .control-label {
+	width: 100%;
+}
+
+
+.control-group.right-panel .span2 {
+	margin-left: 2.12766%;
+}
 .form-horizontal .row-fluid .controls {
 	margin-left: 2.12766%;
 }
@@ -113,19 +132,4 @@ legend.dataCmd button {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis; 
-}
-
-.form-horizontal .row-fluid .control-group:before,
-.form-horizontal .row-fluid .control-group:after,
-.form-horizontal .row-fluid .control-group {
-	display:inline;
-	margin-bottom: 0px;
-}
-
-form.form-horizontal .row-fluid {
-	margin-bottom: 20px;
-}
-
-.control-group.right-panel .span2 {
-	margin-left: 2.12766%;
 }

@@ -44,7 +44,7 @@ def home(request):
 	return render(request, 'home.html', locals())
 
 def search(request):	
-	page_size = 2
+	page_size = 20
 
 	if request.method == 'GET':		
 		form = SearchForm(initial={'paging': 0})

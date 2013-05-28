@@ -54,8 +54,8 @@
 					{% if page > 0 %}
 						<button type="submit" name="previous" class="btn reset" title="Previous"><i class="icon-chevron-left"></i></button>
 					{% endif %}					
-					Page {{ page|add:1 }} of {{ nb_pages|add:1 }} ({{ nb_articles }} item{{ nb_articles|pluralize }}).
-					{% if page < nbPages %}
+					Page {{ page|add:1 }} of {{ nb_pages }} ({{ nb_articles }} item{{ nb_articles|pluralize }}).
+					{% if page < nb_pages|add:-1 %}
 						<button type="submit" name="next" class="btn reset" title="Next"><i class="icon-chevron-right"></i></button>
 					{% endif %}
 					</div>

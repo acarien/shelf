@@ -7,6 +7,7 @@ from django.db.models import Count, Q
 from shelf.forms import ArticleForm, SearchForm, EditArticleForm, SelectEditArticleForm
 from shelf.models import Article, Duration, KeepAllArticlesFilter, OverdueArticlesFilter, AlreadyReadArticlesFilter, ArticleFilters
 import datetime
+import math
 
 def addArticle(request):
 	if request.method == 'POST':
@@ -43,7 +44,7 @@ def home(request):
 	return render(request, 'home.html', locals())
 
 def search(request):	
-	page_size = 20
+	page_size = 2
 
 	if request.method == 'GET':		
 		form = SearchForm(initial={'paging': 0})
@@ -92,7 +93,7 @@ def search_articles(page, page_size, url_title, filter_id):
 		articles = articles.filter(Q(url__contains=url_title) | Q(title__contains=url_title))
 
 	nb_articles = articles.count()
-	nb_pages = nb_articles / page_size
+	nb_pages = int(math.ceil(float(nb_articles) / page_size))
 
 	# in case another filter is applied and less records are returned
 	if page < 0 or page > nb_pages:

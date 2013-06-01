@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load shelf_filters %}
 
 {% block title %}Home{% endblock %}
 
@@ -8,10 +9,24 @@
 			<form action="{% url shelf.views.home %}" method="post"> {% csrf_token %}
 				<div class="row-fluid">	
 					<div class="span12">
-						<legend>Today's readings</legend>												
+						<legend>Reading list</legend>												
 					</div>
 				</div>
-				{% for article in todayArticles %}	
+				{% if number_overrdue_articles > 0 %}
+					<div class="row-fluid">			
+						<div class="span12 text-center text-warning">
+							<h5>
+								{{ number_overrdue_articles }} article{{number_overrdue_articles|pluralize}} {% if number_overrdue_articles == 1 %} is {% else %} are {% endif %} overdue.
+							</h5>
+						</div>
+					</div>
+				{% endif %}
+				{% for article in articles %}	
+					{% ifchanged article.endDate|get_reading_date_string %}					
+						<div class="row-fluid">			
+							<div class="span12"><h5>{{ article.endDate|get_reading_date_string }}</h5></div>						
+						</div>
+	 				{% endifchanged %}
 					<div class="row-fluid">			
 						<div class="span4 wrap">
 							<a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
@@ -26,30 +41,7 @@
 					</div>	
 					{% empty %}
 					<div class="row-fluid">			
-						<div class="span12">No readings for today.</div>
-					</div>
-				{% endfor %}		
-				<div class="row-fluid">	
-					<div class="span12">
-						<legend>Future readings</legend>												
-					</div>
-				</div>	
-				{% for article in additionalArticles %}	
-					<div class="row-fluid">			
-						<div class="span4 wrap">
-							<a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
-						</div>
-						<div class="span4"></div>
-						<div class="span3"></div>
-						<div class="span1">
-							<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="Delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
-							<a href="{% url select_edit_id article.id %}" title="Edit"><i class=" icon-edit"></i></a>
-							<button value="{{ article.id }}" type="submit" name="read" class="reset" title="Read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')"><i class="icon-ok"></i></button>
-						</div>
-					</div>	
-					{% empty %}
-					<div class="row-fluid">			
-						<div class="span12">No more readings.</div>
+						<div class="span12">No planned readings.</div>
 					</div>
 				{% endfor %}					
 			</form>

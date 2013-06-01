@@ -31,7 +31,6 @@ def addArticle(request):
 	return render(request, 'addArticle.html', locals())
 
 def home(request):
-	print request.method	
 	if request.method == 'POST':
 		if 'delete' in request.POST:
 			delete_article(request)
@@ -39,8 +38,8 @@ def home(request):
 			read_article(request)
 
 	today = datetime.date.today()
-	todayArticles = Article.objects.filter(endDate=today, hasBeenRead=False).order_by('title')
-	additionalArticles = Article.objects.filter(endDate__gt=today, hasBeenRead=False).order_by('endDate','title')[:5]
+	number_overrdue_articles = Article.objects.filter(endDate__lt=today, hasBeenRead=True).count()
+	articles = Article.objects.filter(endDate__gte=today, hasBeenRead=False).order_by('endDate', 'title')[:10]
 	return render(request, 'home.html', locals())
 
 def search(request):	
@@ -90,7 +89,7 @@ def read_article(request):
 def search_articles(page, page_size, url_title, filter_id):
 	articles = ArticleFilters.Filters[filter_id].get_articles()
 	if len(url_title.strip()) > 0:
-		articles = articles.filter(Q(url__contains=url_title) | Q(title__contains=url_title))
+		articles = articles.filter(Q(url__icontains=url_title) | Q(title__icontains=url_title))
 
 	nb_articles = articles.count()
 	nb_pages = int(math.ceil(float(nb_articles) / page_size))

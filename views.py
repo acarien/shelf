@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db.models import Count, Q
 from shelf.forms import ArticleForm, SearchForm, EditArticleForm, SelectEditArticleForm
 from shelf.models import Article, Duration, KeepAllArticlesFilter, OverdueArticlesFilter, AlreadyReadArticlesFilter, ArticleFilters
-import datetime
+from datetime import date, timedelta
 import math
 
 def addArticle(request):
@@ -37,9 +37,12 @@ def home(request):
 		elif 'read' in request.POST:
 			read_article(request)
 
-	today = datetime.date.today()
-	number_overrdue_articles = Article.objects.filter(endDate__lt=today, hasBeenRead=True).count()
-	articles = Article.objects.filter(endDate__gte=today, hasBeenRead=False).order_by('endDate', 'title')[:10]
+	today = date.today()
+	number_overrdue_articles = Article.objects.filter(endDate__lt=today,hasBeenRead=True).count()
+	articles = Article.objects\
+		.filter(endDate__gte=today, hasBeenRead=False)\
+		.extra(select={'lower_title':'lower(title)'})\
+		.order_by('endDate', 'lower_title')[:10]
 	return render(request, 'home.html', locals())
 
 def search(request):	
@@ -88,6 +91,7 @@ def read_article(request):
 
 def search_articles(page, page_size, url_title, filter_id):
 	articles = ArticleFilters.Filters[filter_id].get_articles()
+	articles = articles.extra(select={'lower_title':'lower(title)'})
 	if len(url_title.strip()) > 0:
 		articles = articles.filter(Q(url__icontains=url_title) | Q(title__icontains=url_title))
 
@@ -100,7 +104,7 @@ def search_articles(page, page_size, url_title, filter_id):
 
 	start_index = page * page_size
 	end_index = (page + 1) * page_size
-	articles = articles.order_by('endDate', 'title')[start_index:end_index]
+	articles = articles.order_by('endDate', 'lower_title')[start_index:end_index]
 	return page, nb_pages, articles, nb_articles
 
 def select_edit_article(request, article_id=None):

@@ -10,7 +10,7 @@ class ArticleForm(forms.Form):
 	duration = forms.ModelChoiceField(queryset=Duration.objects.all(), required=False)
 
 class SelectEditArticleForm(forms.Form):
-	articles = forms.ModelChoiceField(queryset=Article.objects.all().order_by('title'))	
+	articles = forms.ModelChoiceField(queryset=Article.objects.all().extra(select={'lower_title':'lower(title)'}).order_by('lower_title'))	
 
 class EditArticleForm(forms.ModelForm):
 	id = forms.CharField(widget=forms.HiddenInput)

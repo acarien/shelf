@@ -11,9 +11,9 @@ def get_reading_date_string(value):
 		return "Due today"
 	elif delta.days == 1:
 		return "Due tomorrow"
-	elif delta.days > 1 and delta.days <= 5:
-		return "Due in the following 5 days"
+	elif delta.days > 1 and delta.days <= 6:
+		return 'Due on {:%A} '.format(value)
 	elif delta.days > 5:
-		return "Due in more than 5 days"
+		return "Due in more than one week"
 	else:
 		return "Not due"

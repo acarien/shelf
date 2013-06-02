@@ -44,7 +44,9 @@
 					<div class="span1">
 						<button value="{{ article.id }}" type="submit" name="delete" class="reset" title="Delete" onclick="return confirm('Do you want to delete the article \'{{ article.title }}\'?')"><i class="icon-trash"></i></button>
 						<a href="{% url select_edit_id article.id %}" title="Edit"><i class="icon-edit"></i></a>
-						<button value="{{ article.id }}" type="submit" name="read" class="btn reset {% if article.hasBeenRead %} disabled {% endif %}" title="Read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')" {% if article.hasBeenRead %} disabled {% endif %}><i class="icon-ok"></i></button>
+						{% if article.endDate %}
+							<button value="{{ article.id }}" type="submit" name="read" class="btn reset {% if article.hasBeenRead %} disabled {% endif %}" title="Read" onclick="return confirm('Have you read the article \'{{ article.title }}\'?')" {% if article.hasBeenRead %} disabled {% endif %}><i class="icon-ok"></i></button>
+						{% endif %}
 					</div>
 				</div>								
 			{% endfor %}

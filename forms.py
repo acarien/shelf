@@ -4,10 +4,12 @@ from shelf.models import Article, Duration, KeepAllArticlesFilter, OverdueArticl
 from django.forms import extras
 import datetime
 
-class ArticleForm(forms.Form):
-	url = forms.URLField(max_length=200)
-	title = forms.CharField(max_length=200)
+class ArticleForm(forms.ModelForm):
 	duration = forms.ModelChoiceField(queryset=Duration.objects.all(), required=False)
+
+	class Meta:
+		model = Article
+		fields = ['url', 'title', 'duration']
 
 class SelectEditArticleForm(forms.Form):
 	articles = forms.ModelChoiceField(queryset=Article.objects.all().extra(select={'lower_title':'lower(title)'}).order_by('lower_title'))	

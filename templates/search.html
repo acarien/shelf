@@ -7,7 +7,7 @@
 {% comment %} {% block subNav %}<ul class="subNav"><li><a>Search</a></li><li><a>Schedule</a></li></ul>{% endblock %} {% endcomment %}
 
 {% block content %}
-<form action="{% url shelf.views.search %}" method="post" class="form-horizontal">
+<form action="" method="post" class="form-horizontal">
 	{% csrf_token %}
 	
 	<legend class="dataCmd">
@@ -17,10 +17,16 @@
 
 	<fieldset>
 		<div class="row-fluid">			
-			<div class="span2"><label class="search"> {{ form.urlTitle.label }}</label></div><div class="span5">{{ form.urlTitle }}</div>
-			<div class="span2"><label class="search"> {{ form.filter.label }}</label></div><div class="span3">{{ form.filter }}</div>
+			<div class="control-group">
+				<div class="span2"><label class="control-label" for="id_{{ form.urlTitle.html_name }}">{{ form.urlTitle.label }}</label></div>
+				<div class="controls span5">
+					{{ form.urlTitle }}
+				</div>
+				<div class="span2"><label class="control-label rightPanel" for="id_{{ form.filter.html_name }}">{{ form.filter.label }}</label></div>
+				<div class="controls span3">
+					{{ form.filter }}
+				</div>
 		</div>		
-		{% comment %}	{{ form|as_bootstrap }} {% endcomment %}
 	</fieldset>
 
 		<div class="row-fluid">			

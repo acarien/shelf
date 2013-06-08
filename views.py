@@ -9,36 +9,15 @@ from shelf.models import Article, Duration, KeepAllArticlesFilter, OverdueArticl
 from datetime import date, timedelta
 import math
 
-def addArticle(request):
-	if request.method == 'POST':
-		form = ArticleForm(request.POST)
-
-		if form.is_valid():
-			title = form.cleaned_data['title']
-			url = form.cleaned_data['url']
-			duration = form.cleaned_data['duration']
-			
-			article = Article(title=title, url=url)
-			if duration is not None:
-				article.endDate = duration.getEndDate()
-			article.save()
-			messages.success(request, u'The article has been added.')
-
-			form = ArticleForm
-	else:
-		form = ArticleForm
-
-	return render(request, 'addArticle.html', locals())
-
 def home(request):
 	if request.method == 'POST':
 		if 'delete' in request.POST:
-			delete_article(request)
+			delete_article(request.POST['delete'])
 		elif 'read' in request.POST:
-			read_article(request)
+			read_article(request.POST['read'])
 
 	today = date.today()
-	number_overrdue_articles = Article.objects.filter(endDate__lt=today,hasBeenRead=True).count()
+	number_overrdue_articles = Article.objects.filter(endDate__lt=today, hasBeenRead=False).count()
 	articles = Article.objects\
 		.filter(endDate__gte=today, hasBeenRead=False)\
 		.extra(select={'lower_title':'lower(title)'})\
@@ -56,9 +35,9 @@ def search(request):
 			page = int(form.cleaned_data['paging'])
 						
 			if 'delete' in request.POST:
-				delete_article(request)
+				delete_article(request.POST['delete'])
 			elif 'read' in request.POST:
-				read_article(request)
+				read_article(request.POST['read'])
 			elif 'next' in request.POST:
 				page += 1				
 			elif 'previous' in request.POST:
@@ -78,16 +57,11 @@ def search(request):
 			
 	return render(request, 'search.html', locals())
 
-def delete_article(request):
-	id = request.POST['delete']	
-	article = get_object_or_404(Article, id=id)
-	article.delete()
+def delete_article(article_id):
+	Article.objects.filter(id=article_id).delete()
 
-def read_article(request):
-	id = request.POST['read']	
-	article = get_object_or_404(Article, id=id)
-	article.hasBeenRead = True;
-	article.save()
+def read_article(article_id):
+	Article.objects.filter(id=article_id).update(hasBeenRead=True)	
 
 def search_articles(page, page_size, url_title, filter_id):
 	articles = ArticleFilters.Filters[filter_id].get_articles()
@@ -107,48 +81,36 @@ def search_articles(page, page_size, url_title, filter_id):
 	articles = articles.order_by('endDate', 'lower_title')[start_index:end_index]
 	return page, nb_pages, articles, nb_articles
 
-def select_edit_article(request, article_id=None):
-	if request.method == 'GET':
-		if article_id is not None:
-			article = get_object_or_404(Article, id=article_id)		
-			form = SelectEditArticleForm(initial = {'articles': article_id})
-		else:
-			form = SelectEditArticleForm()
-	elif request.method == 'POST' and request.is_ajax():
-		form = SelectEditArticleForm(request.POST)
-		if form.is_valid():
-			articles = form.cleaned_data['articles']
-			try:
-				article = Article.objects.get(id=articles.id)	
-				form = EditArticleForm(instance = article)
-				postValues = request.POST.copy()
-				postValues['id'] = articles.id
-				return render(request, 'editArticle.html', locals())
-			except Article.DoesNotExist:
-				form = EditArticleForm()
-			return render(request, 'editArticle.html', locals())
-		else:
-			return HttpResponse()
-	else:
-		form = SelectEditArticleForm()
-	return render(request, 'selectEditArticle.html', locals())
+def addArticle(request):
+	if request.method == 'POST':
+		form = ArticleForm(request.POST)
 
-def edit_article(request):
-	if request.method == 'POST' and request.is_ajax():
-		form = EditArticleForm(request.POST)	
 		if form.is_valid():
-			article_id = form.cleaned_data['id']
-			article = get_object_or_404(Article, id = article_id) # todo raise exception
-			article.title = form.cleaned_data['title']
-			article.url = form.cleaned_data['url']
-			article.hasBeenRead = form.cleaned_data['hasBeenRead']
-			article.endDate = form.cleaned_data['endDate']						
+			article = form.save(commit=False)
+			duration = form.cleaned_data['duration']
+			if duration is not None:
+				article.endDate = duration.getEndDate()
 			article.save()
-			messages.success(request, u'The article has been updated.')
-		else:
-			print 'not cleaned'
-		return render(request, 'editArticle.html', locals())
+
+			messages.success(request, u'The article has been added.')
+			form = ArticleForm
 	else:
-		form = SelectEditArticleForm()
-		return render(request, 'selectEditArticle.html', locals())
+		form = ArticleForm
+
+	return render(request, 'addArticle.html', locals())
+
+def edit_article(request, article_id):
+	article = get_object_or_404(Article, id=article_id)		
+	if request.method == 'GET':
+		form = EditArticleForm(instance = article)
+	elif request.method == 'POST':
+		form = EditArticleForm(request.POST, instance=article)
+		if form.is_valid():
+			form.save()
+			postValues = request.POST.copy()
+			postValues['id'] = article_id
+			messages.success(request, u'The article has been updated.')
+	print article.creationDate 
+	readOnlyFields = { 'Creation Date': article.creationDate }
+	return render(request, 'editArticle.html', locals())
 

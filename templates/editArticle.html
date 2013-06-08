@@ -1,27 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Edit article{% endblock %}
+{% block fakePages %}<li class="block fake-page-nav-item">Edit</li>{% endblock %}
+
+{% block content %}
+
 <script type="text/javascript">
 	$(function(){
 		date = $("#id_endDate").val();
 		$("#id_endDate").datepicker();
 	});
-	$(function(){
-		$("#save").click(function() {
-			var urlSubmit = $('#edit_article').attr('action');
-			$.ajax({  
-				type: "POST",
-				url: urlSubmit,
-				data: $('#edit_article').serializeArray(),
-				success: function(data) {
-						$('#response-inner').html();
-						$('#response-inner').html(data);
-				}
-			});		
-			return false;
-		});
-	});
-
 </script>
-<div id="response-inner">
-	<form id="edit_article" action="{% url shelf.views.edit_article %}" method="post" class="form-horizontal">
+
+	<form action="" method="post" class="form-horizontal">
 		{% csrf_token %}
 		<legend class="dataCmd">
 			<span class="title">Edit</span>
@@ -55,12 +46,26 @@
 				{% if not forloop.counter0|divisibleby:"2" or forloop.last%}
 					</div> 
 				{% endif %}
-			{% endfor %}
+			{% endfor %}	
 			
-			{% for field in form.hidden_fields %}
-				{{ field }}
+			{% for key,value in readOnlyFields.items %}
+				{% if forloop.counter0|divisibleby:"2" %}
+					<div class="row-fluid"> 
+				{% endif %}				
+					<div class="control-group {% if not forloop.counter0|divisibleby:'2' %} right-panel {% endif %}">
+						<div class="span2"><label class="control-label" for="id_{{ key }}">{{ key }}</label></div>
+						<div class="controls span4 readonly">
+							{{ value|date:"d M Y" }}
+						</div>
+					</div>
+				{% if not forloop.counter0|divisibleby:"2" or forloop.last%}
+					</div> 
+				{% endif %}
 			{% endfor %}
+
+			{% for field in form.hidden_fields %}
+	      {{ field }}
+			{% endfor %}		
 		</fieldset>
 	</form>
-
-</div>
+{% endblock %}

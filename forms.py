@@ -2,6 +2,7 @@
 from django import forms
 from shelf.models import Article, Duration, KeepAllArticlesFilter, OverdueArticlesFilter, AlreadyReadArticlesFilter, ArticleFilters
 from django.forms import extras
+from django.forms.util import flatatt
 import datetime
 
 class ArticleForm(forms.ModelForm):
@@ -22,7 +23,7 @@ class EditArticleForm(forms.ModelForm):
 		self.fields['hasBeenRead'].label = "Has been read"
 		self.fields['endDate'].label = "End date"
 		self.fields['endDate'].required = False
-
+	
 	def clean(self):
 		cleaned_data = super(EditArticleForm, self).clean()
 		article_id = cleaned_data['id']
@@ -36,7 +37,7 @@ class EditArticleForm(forms.ModelForm):
 			raise forms.ValidationError(u"Article does not exist.")					
 
 		return cleaned_data
- 
+
 	class Meta:
 		model = Article
 
@@ -68,4 +69,3 @@ class SearchForm(forms.Form):
 			raise forms.ValidationError("Filter has not a valid value.")
 
 		return id
-

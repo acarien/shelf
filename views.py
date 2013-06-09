@@ -24,11 +24,20 @@ def home(request):
 		.order_by('endDate', 'lower_title')[:10]
 	return render(request, 'home.html', locals())
 
-def search(request):	
+def search(request, filter_name=None):	
 	page_size = 20
 
-	if request.method == 'GET':		
-		form = SearchForm(initial={'paging': 0})
+	if request.method == 'GET':				
+		filter_id = ArticleFilters.get_filter_id(filter_name)
+		if filter_name is not None:
+			page, nb_pages, articles, nb_articles = search_articles(0, page_size, None, filter_id)
+
+			postValues = request.POST.copy()
+			postValues['paging'] = page
+			postValues['filter'] = filter_id
+			form = SearchForm(postValues)
+		else:
+			form = SearchForm(initial={'paging': 0, 'filter': filter_id})
 	else:
 		form = SearchForm(request.POST)
 		if form.is_valid():
@@ -47,7 +56,6 @@ def search(request):
 			filter_id = int(form.cleaned_data['filter'])
 
 			page, nb_pages, articles, nb_articles = search_articles(page, page_size, url_title, filter_id)
-
 			postValues = request.POST.copy()
 			postValues['paging'] = page
 			form = SearchForm(postValues)
@@ -64,9 +72,9 @@ def read_article(article_id):
 	Article.objects.filter(id=article_id).update(hasBeenRead=True)	
 
 def search_articles(page, page_size, url_title, filter_id):
-	articles = ArticleFilters.Filters[filter_id].get_articles()
+	articles = ArticleFilters.get_filter(filter_id).get_articles()
 	articles = articles.extra(select={'lower_title':'lower(title)'})
-	if len(url_title.strip()) > 0:
+	if url_title is not None and len(url_title.strip()) > 0:
 		articles = articles.filter(Q(url__icontains=url_title) | Q(title__icontains=url_title))
 
 	nb_articles = articles.count()

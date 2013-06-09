@@ -16,7 +16,7 @@
 					<div class="row-fluid">			
 						<div class="span12 text-center text-warning">
 							<h5>
-								{{ number_overrdue_articles }} article{{number_overrdue_articles|pluralize}} {% if number_overrdue_articles == 1 %} is {% else %} are {% endif %} overdue.
+								<a href="{% url search 'overdue' %}">{{ number_overrdue_articles }} article{{number_overrdue_articles|pluralize}} {% if number_overrdue_articles == 1 %} is {% else %} are {% endif %} overdue.</a>
 							</h5>
 						</div>
 					</div>

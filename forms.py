@@ -54,7 +54,7 @@ class DurationAdminForm(forms.ModelForm):
 		return cleaned_data
 
 class SearchForm(forms.Form):
-	filterChoices = (ArticleFilters.Filters.items())
+	filterChoices = (ArticleFilters.items())
 	filter = forms.ChoiceField(choices=filterChoices)
 	urlTitle = forms.CharField(max_length=400, label='Url/Title', required=False)
 	paging = forms.CharField(widget=forms.HiddenInput, required=False)
@@ -65,7 +65,7 @@ class SearchForm(forms.Form):
 			raise forms.ValidationError("Filter has not a valid value.")
 
 		id = int(filter_id)
-		if id not in  ArticleFilters.Filters:
+		if not ArticleFilters.contains(id):
 			raise forms.ValidationError("Filter has not a valid value.")
 
 		return id
